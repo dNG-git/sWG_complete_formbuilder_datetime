@@ -70,8 +70,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$g_continue_check = true;
-if (defined ("CLASS_direct_formbuilder_datetime_extended")) { $g_continue_check = false; }
+$g_continue_check = ((defined ("CLASS_direct_formbuilder_datetime_extended")) ? false : true);
 if (!defined ("CLASS_direct_formbuilder")) { $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_formbuilder.php"); }
 if (!defined ("CLASS_direct_formbuilder")) { $g_continue_check = false; }
 
@@ -238,19 +237,18 @@ $this->form_cache[$f_form_id] = array (
 				foreach ($f_format_array as $f_element)
 				{
 					if (($f_element == "G")||($f_element == "H")) { $direct_cachedata["i_0_".$f_name] = $f_hour_array[1]; }
+
 					if (($f_element == "g")||($f_element == "h"))
 					{
 						if (stristr ($direct_cachedata["i_1_".$f_name],"am"))
 						{
 							if ($f_hour_array[1] == 12) { $f_hour_array[1] = 0; }
 						}
-						else
-						{
-							if ($f_hour_array[1] < 12) { $f_hour_array[1] += 12; }
-						}
+						elseif ($f_hour_array[1] < 12) { $f_hour_array[1] += 12; }
 
 						$direct_cachedata["i_0_".$f_name] = $f_hour_array[1];
 					}
+
 					if ($f_element == "i") { $direct_cachedata["i_2_".$f_name] = $f_minute_array[1]; }
 				}
 			}
@@ -363,13 +361,11 @@ Informing the system about available functions
 
 		$f_return = "";
 
-		if ($f_data['helper_text']) { $f_js_helper = "<br />\n<span style='font-size:8px'>&#0160;</span><br />\n".($direct_classes['output']->js_helper ($f_data['helper_text'],$f_data['helper_url'],$f_data['helper_closing'])); }
-		else { $f_js_helper = ""; }
-
 		$f_date_array = explode (".",$f_data['content']);
 		$f_format = direct_local_get ("datetime_shortdate");
 		$f_format_count = strlen (direct_local_get ("datetime_shortdate"));
 		$f_formatted_inputarea = "";
+		$f_js_helper = ($f_data['helper_text'] ? "<br />\n<span style='font-size:8px'>&#0160;</span><br />\n".($direct_classes['output']->js_helper ($f_data['helper_text'],$f_data['helper_url'],$f_data['helper_closing'])) : "");
 
 		for ($f_i = 0;$f_i < $f_format_count;$f_i++)
 		{
@@ -405,12 +401,10 @@ $f_return .= ($f_data['title'].":</span></td>
 
 		$f_return = "";
 
-		if ($f_data['helper_text']) { $f_js_helper = "<br />\n<span style='font-size:8px'>&#0160;</span><br />\n".($direct_classes['output']->js_helper ($f_data['helper_text'],$f_data['helper_url'],$f_data['helper_closing'])); }
-		else { $f_js_helper = ""; }
-
 		$f_format = direct_local_get ("datetime_time");
 		$f_format_count = strlen (direct_local_get ("datetime_time"));
 		$f_formatted_inputarea = "";
+		$f_js_helper = ($f_data['helper_text'] ? "<br />\n<span style='font-size:8px'>&#0160;</span><br />\n".($direct_classes['output']->js_helper ($f_data['helper_text'],$f_data['helper_url'],$f_data['helper_closing'])) : "");
 		$f_pm_check = false;
 		$f_time_array = explode (".",$f_data['content']);
 
